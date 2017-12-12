@@ -1,0 +1,49 @@
+//In TreeSurvival.cpp
+inside the function TreeSurvival::findBestSplit
+
+//create  findBestSplitValueLR 
+for (auto& varID : possible_split_varIDs){
+findBestSplitValueLR(varID)->init(data,sampleIDS,nodeID, varID,unique_timepoints,status_varID,response_timepointIDs)
+}
+
+findBestSplitValueLR[i]->findBestSplitValueLogRank(&variable_importance);
+
+
+findBestSplitValueLR::init(Data* data,  std::vector<std::vector<size_t>> sampleIDs, size_t nodeID ,size_t varID, std::vector<double>* unique_timepoints, 
+size_t status_varID,std::vector<size_t>* response_timepointIDs)
+
+
+
+//findBestSplitValueLR.cpp
+//construct
+
+findBestSplitValueLR::findBestSplitValueLR( Data* data,  std::vector<std::vector<size_t>> sampleIDs, size_t nodeID ,size_t varID, std::vector<double>* unique_timepoints, 
+size_t status_varID,std::vector<size_t>* response_timepointIDs){
+}
+
+//init
+findBestSplitValueLR::init(Data* data,  std::vector<std::vector<size_t>> sampleIDs, size_t nodeID ,size_t varID, std::vector<double>* unique_timepoints, 
+size_t status_varID,std::vector<size_t>* response_timepointIDs)
+    {
+        this->data=data;
+        this->sampleIDS=sampleIDS;
+        this->nodeID= nodeID;
+        this->varID=varID;
+        this->unique_timepoints=unique_timepoints;
+        this->status_varID=status_varID;
+        this->response_timepointIDs=response_timepointIDs;
+        
+        
+    }
+    
+//findBestSplitValueLogRank find the cut off thredhold for varID
+findBestSplitValueLR::findBestSplitValueLogRank(size_t nodeID, size_t varID, double& best_value, size_t& best_varID,
+    double& best_logrank){
+    
+    
+}
+
+findBestSplitValueLR::computeChildDeathCounts()
+
+
+
