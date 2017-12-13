@@ -26,7 +26,7 @@ findBestSplitValueLR::init(Data* data,  std::vector<std::vector<size_t>> sampleI
 size_t status_varID,std::vector<size_t>* response_timepointIDs)
     {
         this->data=data;
-        this->sampleIDS=sampleIDS;
+        this->sampleIDS=sampleIDS
         this->nodeID= nodeID;
         this->varID=varID;
         this->unique_timepoints=unique_timepoints;
