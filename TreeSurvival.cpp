@@ -172,8 +172,6 @@ bool TreeSurvival::findBestSplit(size_t nodeID, std::vector<size_t>& possible_sp
          
           std::cout << typeid(varID).name() << std::endl;
           std:: cout << "varID is " << varID << "\n"<< std::endl;
-          
-//          findBestSplitValueLRs[i]->init();
           findBestSplitValueLRs[i]->init(data,sampleIDs,nodeID,varID,unique_timepoints,status_varID,response_timepointIDs,min_node_size,num_deaths,num_samples_at_risk);
       }
       // split tree on all possible split variables in multiple threads and join the threads with the main thread
@@ -182,8 +180,8 @@ bool TreeSurvival::findBestSplit(size_t nodeID, std::vector<size_t>& possible_sp
       clock_t start_time = clock();
       clock_t lap_time = clock();
       for (size_t i = 0; i < num_split_varIDs; ++i) {
-          //findBestSplitValueLRs[i]->findBestSplitValueLogRank1(nodeID, possible_split_varIDs[i], best_value, best_varID, best_decrease);
-          findBestSplitValueLRs[i]->printSome();
+          findBestSplitValueLRs[i]->findBestSplitValueLogRank1(nodeID,varID, best_value, best_varID, best_decrease);
+          //findBestSplitValueLRs[i]->printSome();
           Sprogress++;
           showProgress("Splitting..", start_time, lap_time);
       }
@@ -238,8 +236,8 @@ bool TreeSurvival::findBestSplit(size_t nodeID, std::vector<size_t>& possible_sp
 void TreeSurvival::findBestSplitValueLRInthread(uint thread_idx, size_t nodeID, std::vector<size_t>*  possible_split_varIDs, double* best_value, size_t* best_varID,double* best_decrease) {
     if (thread_ranges1.size() > thread_idx + 1) {
         for (size_t i = thread_ranges1[thread_idx]; i < thread_ranges1[thread_idx + 1]; ++i) {
-              findBestSplitValueLRs[i]->printSome();
-              //findBestSplitValueLRs[i]->findBestSplitValueLogRank1(nodeID, possible_split_varIDs[i], best_value, best_varID, best_decrease);
+              //findBestSplitValueLRs[i]->printSome();
+              findBestSplitValueLRs[i]->findBestSplitValueLogRank1(nodeID, possible_split_varIDs[i], best_value, best_varID, best_decrease);
             //findBestSplitValueLRs[i]->findBestSplitValueLogRank2(nodeID, possible_split_varIDs[i]);
             
             // Check for user interrupt
