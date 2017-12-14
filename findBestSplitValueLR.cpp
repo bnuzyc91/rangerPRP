@@ -71,7 +71,7 @@ void findBestSplitValueLR::printSome()
      std:: cout << "print some2 in findBestSplitValueLR "<< std::endl;
 }
 
-void findBestSplitValueLR::findBestSplitValueLogRank1(size_t nodeID, size_t varID, double& best_value, size_t& best_varID,double& best_logrank) {
+void findBestSplitValueLR::findBestSplitValueLogRank1(size_t nodeID, size_t varID, double& best_value,double& best_logrank) {
     
     // Create possible split values
     std::vector<double> possible_split_values;
@@ -130,16 +130,16 @@ void findBestSplitValueLR::findBestSplitValueLogRank1(size_t nodeID, size_t varI
             logrank = fabs(numerator / sqrt(denominator_squared));
         }
         
-        if (logrank > best_logrank) {
+       // if (logrank > best_logrank) {
             best_value = (possible_split_values[i] + possible_split_values[i + 1]) / 2;
-            best_varID = varID;
+            //best_varID = varID;
             best_logrank = logrank;
             
             // Use smaller value if average is numerically the same as the larger value
             if (best_value == possible_split_values[i + 1]) {
                 best_value = possible_split_values[i];
             }
-        }
+      //  }
     }
     
     delete[] num_deaths_right_child;
