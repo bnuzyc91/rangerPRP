@@ -146,9 +146,9 @@ bool TreeSurvival::findBestSplit(size_t nodeID, std::vector<size_t>& possible_sp
 //        std:: cout << "another varID is" << possible_split_varIDs[i] << "\n"<< std::endl;
 //   }
     // Create thread ranges
-    //num_split_varIDs should be a uint
-    //so
-     equalSplit(thread_ranges1,  0, num_split_varIDs - 1, 1);
+    //num_split_varIDs should be a uint  num_threads also a uint hard coding now 
+     uint num_threads=1
+     equalSplit(thread_ranges1,  0, num_split_varIDs - 1, num_threads);
       //std:: cout << "Inside findBestSplit nodeID is " << nodeID << "\n"<< std::endl;
       double best_decrease = -1;
       size_t num_samples_node = sampleIDs[nodeID].size();
@@ -178,17 +178,17 @@ bool TreeSurvival::findBestSplit(size_t nodeID, std::vector<size_t>& possible_sp
       }
       // split tree on all possible split variables in multiple threads and join the threads with the main thread
       #ifdef OLD_WIN_R_BUILD
-      progress = 0;
+      Sprogress = 0;
       clock_t start_time = clock();
       clock_t lap_time = clock();
       for (size_t i = 0; i < num_split_varIDs; ++i) {
           //findBestSplitValueLRs[i]->findBestSplitValueLogRank1(nodeID, possible_split_varIDs[i], best_value, best_varID, best_decrease);
           findBestSplitValueLRs[i]->printSome();
-          progress++;
+          Sprogress++;
           showProgress("Splitting..", start_time, lap_time);
       }
     #else
-      progress = 0;
+      Sprogress = 0;
     #ifdef R_BUILD
       aborted = false;
       aborted_threads = 0;
