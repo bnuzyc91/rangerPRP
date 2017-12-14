@@ -147,7 +147,7 @@ bool TreeSurvival::findBestSplit(size_t nodeID, std::vector<size_t>& possible_sp
 //   }
     // Create thread ranges
     //num_split_varIDs should be a uint  num_threads also a uint hard coding now 
-     uint num_threads=1
+    uint num_threads=1;
      equalSplit(thread_ranges1,  0, num_split_varIDs - 1, num_threads);
       //std:: cout << "Inside findBestSplit nodeID is " << nodeID << "\n"<< std::endl;
       double best_decrease = -1;
@@ -254,7 +254,7 @@ void TreeSurvival::findBestSplitValueLRInthread(uint thread_idx, size_t nodeID, 
             
             // Increase progress by 1 tree
             std::unique_lock<std::mutex> lock(mutex);
-            ++progress;
+            ++Sprogress;
             condition_variable.notify_one();
         }
     }
@@ -969,7 +969,7 @@ void TreeSurvival::showSProgress(std::string operation) {
     std::unique_lock<std::mutex> lock(mutex);
     
     // Wait for message from threads and show output if enough time elapsed
-    while (progress < num_split_varIDs) {
+    while (Sprogress < num_split_varIDs) {
         condition_variable.wait(lock);
         seconds elapsed_time = duration_cast<seconds>(steady_clock::now() - last_time);
         
@@ -983,8 +983,8 @@ void TreeSurvival::showSProgress(std::string operation) {
         }
 #endif
         
-        if (progress > 0 && elapsed_time.count() > STATUS_INTERVAL) {
-            double relative_progress = (double) progress / (double) num_split_varIDs;
+        if (Sprogress > 0 && elapsed_time.count() > STATUS_INTERVAL) {
+            double relative_progress = (double) Sprogress / (double) num_split_varIDs;
             seconds time_from_start = duration_cast<seconds>(steady_clock::now() - start_time);
             uint remaining_time = (1 / relative_progress - 1) * time_from_start.count();
            // *verbose_out << operation << " Progress: " << round(100 * relative_progress) << "%. Estimated remaining time: "
