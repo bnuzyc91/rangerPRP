@@ -70,6 +70,13 @@ public:
 
     //maybe should belong to protected
 protected:
+     // Show progress every few seconds
+ #ifdef OLD_WIN_R_BUILD
+    void showSProgress(std::string operation, clock_t start_time, clock_t& lap_time);
+ #else
+    void showSProgress(std::string operation);
+ #endif
+ 
     // Multithreading
     uint num_threads;
     std::vector<uint> thread_ranges1;
@@ -79,18 +86,14 @@ protected:
     #endif
      std::vector<findBestSplitValueLR*> findBestSplitValueLRs;
     // Computation progress (finished trees)
-    size_t progress;
+    size_t Sprogress;
     #ifdef R_BUILD
     size_t aborted_threads;
     bool aborted;
     #endif
     
-    // Show progress every few seconds
-#ifdef OLD_WIN_R_BUILD
-    void showSProgress(std::string operation, clock_t start_time, clock_t& lap_time);
-#else
-    void showSProgress(std::string operation);
-#endif
+
+ 
 //private:
 
   void createEmptyNodeInternal();
