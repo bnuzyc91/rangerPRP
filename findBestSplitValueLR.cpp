@@ -17,33 +17,58 @@
 #include "Data.h"
 #include "findBestSplitValueLR.h"
 
-//construct
-findBestSplitValueLR::findBestSplitValueLR( Data* data,  std::vector<std::vector<size_t>> sampleIDs, size_t nodeID ,size_t varID, std::vector<double>* unique_timepoints,
-                                           size_t status_varID,std::vector<size_t>* response_timepointIDs){
-}
+//to do construct
+//in construct sampleIDs=0 is wrong
+findBestSplitValueLR::findBestSplitValueLR(){};
+//findBestSplitValueLR::findBestSplitValueLR(): data(0), sampleIDs(0), nodeID(0) , varID(0),  unique_timepoints(0), status_varID(0),response_timepointIDs(0), min_node_size(0) {
+//}
 
 //init
-findBestSplitValueLR::init(Data* data,  std::vector<std::vector<size_t>> sampleIDs, size_t nodeID ,size_t varID, std::vector<double>* unique_timepoints,
-                           size_t status_varID,std::vector<size_t>* response_timepointIDs)
+//init
+void findBestSplitValueLR::init(Data* data,  std::vector<std::vector<size_t>>& sampleIDs, size_t nodeID ,size_t varID, std::vector<double>* unique_timepoints,
+                                size_t status_varID,std::vector<size_t>* response_timepointIDs,size_t min_node_size,size_t* num_deaths, size_t* num_samples_at_risk)
 {
+     std:: cout << "print some1 in findBestSplitValueLR "<< std::endl;
     this->data=data;
-    this->sampleIDS=sampleIDS;
+    this->sampleIDs=sampleIDs;
     this->nodeID= nodeID;
     this->varID=varID;
     this->unique_timepoints=unique_timepoints;
     this->status_varID=status_varID;
     this->response_timepointIDs=response_timepointIDs;
+    this->min_node_size=min_node_size;
+    //    num_timepoints = unique_timepoints->size();
+    this->num_deaths =num_deaths ;
+    this->num_samples_at_risk = num_samples_at_risk;
+    double value =data->get(nodeID, varID);
+    size_t i=0;
+    std:: cout << "inside findBestSplitValueLR value is " << value << "\n"<< std::endl;
+        std:: cout << "sampleIDs is " << sampleIDs[nodeID].size() << "\n"<< std::endl;
+    std:: cout << "unique_timepoints is " << unique_timepoints[i].size() << "\n"<< std::endl;
+        std:: cout << "response_timepointIDs is " << response_timepointIDs[i].size() << "\n"<< std::endl;
+        std:: cout << "status_varID is "<< status_varID << "\n"<< std::endl;
+        std:: cout << "num_deaths is " << num_deaths[i] << "\n"<< std::endl;
+        std:: cout << "num_samples_at_risk is " << num_samples_at_risk[i] << "\n"<< std::endl;
+        std:: cout << "min_node_size is "<< min_node_size << "\n"<< std::endl;
     
-    
+         this->varID=varID;
+        std::cout << typeid(varID).name() << std::endl;
+        std:: cout << "inside findBestSplitValueLR varID is " << varID << "\n"<< std::endl;
 }
 
-//deconstruct
+
+//deconstruct todo
 findBestSplitValueLR::~findBestSplitValueLR(){
+    
+    // Delete sampleID vector to save memory
+    //sampleIDs.clear();
+    //sampleIDs.shrink_to_fit();
+
 }
 
 void findBestSplitValueLR::printSome()
 {
-     std:: cout << "print some in findBestSplitValueLR "<< std::endl;
+     std:: cout << "print some2 in findBestSplitValueLR "<< std::endl;
 }
 
 void findBestSplitValueLR::findBestSplitValueLogRank1(size_t nodeID, size_t varID, double& best_value, size_t& best_varID,double& best_logrank) {
@@ -65,7 +90,7 @@ void findBestSplitValueLR::findBestSplitValueLogRank1(size_t nodeID, size_t varI
     size_t* delta_samples_at_risk_right_child = new size_t[num_splits * num_timepoints]();
     size_t* num_samples_right_child = new size_t[num_splits]();
     
-    computeChildDeathCounts(nodeID, varID, possible_split_values, num_samples_right_child,
+    computeChildDeathCounts1(nodeID, varID, possible_split_values, num_samples_right_child,
                             delta_samples_at_risk_right_child, num_deaths_right_child, num_splits);
     
     // Compute logrank test for all splits and use best
@@ -121,6 +146,8 @@ void findBestSplitValueLR::findBestSplitValueLogRank1(size_t nodeID, size_t varI
     delete[] delta_samples_at_risk_right_child;
     delete[] num_samples_right_child;
 }
+
+
 
 void findBestSplitValueLR::computeChildDeathCounts1(size_t nodeID, size_t varID, std::vector<double>& possible_split_values,
                                            size_t* num_samples_right_child, size_t* delta_samples_at_risk_right_child, size_t* num_deaths_right_child,

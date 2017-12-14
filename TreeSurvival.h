@@ -150,6 +150,8 @@ protected:
   std::vector<std::vector<double>> chf;
 
   // Fields to save to while tree growing
+    //std::vector<size_t>*  num_deaths;
+    //std::vector<size_t>* num_samples_at_risk;
   size_t* num_deaths;
   size_t* num_samples_at_risk;
 private:

@@ -37,6 +37,7 @@
 #include "TreeSurvival.h"
 #include "Data.h"
 #include "findBestSplitValueLR.h"
+#include <typeinfo>
 TreeSurvival::TreeSurvival(std::vector<double>* unique_timepoints, size_t status_varID,
     std::vector<size_t>* response_timepointIDs) :
     status_varID(status_varID), unique_timepoints(unique_timepoints), response_timepointIDs(response_timepointIDs), num_deaths(
@@ -129,24 +130,29 @@ bool TreeSurvival::splitNodeInternal(size_t nodeID, std::vector<size_t>& possibl
 }
 
 bool TreeSurvival::findBestSplit(size_t nodeID, std::vector<size_t>& possible_split_varIDs) {
-  
-    size_t num_split_varIDs=possible_split_varIDs.size();
-    // Create thread ranges
-    equalSplit(thread_ranges1, 0, num_split_varIDs - 1, num_threads);
-    // For all possible split variables
-    for (auto& varID : possible_split_varIDs) {
-        std:: cout << "varID is " << varID << "\n"<< std::endl;
-
-    }
-    for(size_t i = 0; i < num_split_varIDs; ++i)
-    {
-        std:: cout << "another varID is" << possible_split_varIDs[i] << "\n"<< std::endl;
-    }
     
-      std:: cout << "Inside findBestSplit nodeID is " << nodeID << "\n"<< std::endl;
+    uint num_split_varIDs=possible_split_varIDs.size();
+   //unsigned long = m unsigned int = j
+    std:: cout << "num_split_varIDs is " << num_split_varIDs << "\n"<< std::endl;
+    std:: cout << "num_split_varIDs is " << typeid(num_split_varIDs).name() << "\n"<< std::endl;
+    // For all possible split variables
+//    for (auto& varID : possible_split_varIDs) {
+//        std::cout << typeid(varID).name() << std::endl;
+//        std:: cout << "varID is " << varID << "\n"<< std::endl;
+//    }
+    
+//    for(size_t i = 0; i < num_split_varIDs; ++i)
+//    {
+//        std:: cout << "another varID is" << possible_split_varIDs[i] << "\n"<< std::endl;
+//   }
+    // Create thread ranges
+    //num_split_varIDs should be a uint
+    //so
+     equalSplit(thread_ranges1,  0, num_split_varIDs - 1, 1);
+      //std:: cout << "Inside findBestSplit nodeID is " << nodeID << "\n"<< std::endl;
       double best_decrease = -1;
       size_t num_samples_node = sampleIDs[nodeID].size();
-      std:: cout << "this nodeID with size " << num_samples_node << "\n"<< std::endl;
+      //std:: cout << "this nodeID with size " << num_samples_node << "\n"<< std::endl;
       size_t best_varID = 0;
       double best_value = 0;
 
@@ -154,10 +160,21 @@ bool TreeSurvival::findBestSplit(size_t nodeID, std::vector<size_t>& possible_sp
 
   // Stop early if no split posssible
   if (num_samples_node >= 2 * min_node_size) {
-
+      // There findBestSplitValueLRs must be created.
+      findBestSplitValueLRs.reserve(num_split_varIDs);
+      for (size_t i = 0; i < num_split_varIDs; ++i) {
+          findBestSplitValueLRs.push_back(new findBestSplitValueLR());
+      }
     // For all possible split variables
-      for (auto& varID : possible_split_varIDs){
-          findBestSplitValueLRs[varID]->init(data,sampleIDs,nodeID,varID,unique_timepoints,status_varID,response_timepointIDs);
+      for(size_t i = 0; i < num_split_varIDs; ++i){
+          
+          size_t varID=possible_split_varIDs[i];
+         
+          std::cout << typeid(varID).name() << std::endl;
+          std:: cout << "varID is " << varID << "\n"<< std::endl;
+          
+//          findBestSplitValueLRs[i]->init();
+          findBestSplitValueLRs[i]->init(data,sampleIDs,nodeID,varID,unique_timepoints,status_varID,response_timepointIDs,min_node_size,num_deaths,num_samples_at_risk);
       }
       // split tree on all possible split variables in multiple threads and join the threads with the main thread
       #ifdef OLD_WIN_R_BUILD
