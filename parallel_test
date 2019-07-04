@@ -166,3 +166,26 @@ delta.time <- rbind(delta.time.serial, delta.time.p2, delta.time.p4, delta.time.
 save(delta.time, file="delta.time.RData")
 
 
+library(mlr)
+library(parallel)
+
+system.time({t = lapply(1:4,function(i) {
+  m = matrix(1:10^6,ncol=1000)
+  t = system.time({
+    m%*%t(m)
+  })
+  return(t)
+})})
+
+
+
+system.time({
+  mc_t = mclapply(1:4,function(m){
+    m = matrix(1:10^6,ncol=1000)
+    t = system.time({
+      m%*%t(m)
+    })
+    return(t)
+  },mc.cores=2)
+})
+
